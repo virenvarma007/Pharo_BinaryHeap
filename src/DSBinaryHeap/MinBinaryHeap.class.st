@@ -1,5 +1,5 @@
 Class {
-	#name : #BinaryHeap,
+	#name : #MinBinaryHeap,
 	#superclass : #Object,
 	#instVars : [
 		'collection'
@@ -8,20 +8,20 @@ Class {
 }
 
 { #category : #operations }
-BinaryHeap >> add: anObject [
+MinBinaryHeap >> add: anObject [
     collection addLast: anObject.
     self bubbleUpFrom: collection size.
 ]
 
 { #category : #API }
-BinaryHeap >> bubbleDownFrom: anIndex [
+MinBinaryHeap >> bubbleDownFrom: anIndex [
     | leftChildIndex rightChildIndex maxIndex |
     leftChildIndex := anIndex * 2.
     rightChildIndex := anIndex * 2 + 1.
     maxIndex := anIndex.
-    (leftChildIndex <= collection size and: [ (collection at: leftChildIndex) > (collection at: maxIndex) ])
+    (leftChildIndex <= collection size and: [ (collection at: leftChildIndex) < (collection at: maxIndex) ])
         ifTrue: [ maxIndex := leftChildIndex ].
-    (rightChildIndex <= collection size and: [ (collection at: rightChildIndex) > (collection at: maxIndex) ])
+    (rightChildIndex <= collection size and: [ (collection at: rightChildIndex) < (collection at: maxIndex) ])
         ifTrue: [ maxIndex := rightChildIndex ].
     maxIndex = anIndex ifFalse: [
         collection swap: anIndex with: maxIndex.
@@ -30,11 +30,11 @@ BinaryHeap >> bubbleDownFrom: anIndex [
 ]
 
 { #category : #API }
-BinaryHeap >> bubbleUpFrom: anIndex [
+MinBinaryHeap >> bubbleUpFrom: anIndex [
     | parentIndex |
     parentIndex := anIndex // 2.
     anIndex > 1 ifTrue: [
-        (collection at: anIndex) > (collection at: parentIndex) ifTrue: [
+        (collection at: anIndex) < (collection at: parentIndex) ifTrue: [
             collection swap: anIndex with: parentIndex.
             self bubbleUpFrom: parentIndex
         ]
@@ -42,28 +42,28 @@ BinaryHeap >> bubbleUpFrom: anIndex [
 ]
 
 { #category : #accessing }
-BinaryHeap >> collection [
+MinBinaryHeap >> collection [
   ^collection  
 ]
 
 { #category : #initialization }
-BinaryHeap >> initialize [
+MinBinaryHeap >> initialize [
     super initialize.
     collection := OrderedCollection new.
 ]
 
 { #category : #accessing }
-BinaryHeap >> isEmpty [
+MinBinaryHeap >> isEmpty [
     ^ collection isEmpty
 ]
 
 { #category : #accessing }
-BinaryHeap >> peek [
+MinBinaryHeap >> peek [
     ^ collection first
 ]
 
 { #category : #operations }
-BinaryHeap >> remove [
+MinBinaryHeap >> remove [
     | result |
     collection swap: 1 with: collection size.
     result := collection removeLast.
@@ -72,6 +72,6 @@ BinaryHeap >> remove [
 ]
 
 { #category : #accessing }
-BinaryHeap >> size [
+MinBinaryHeap >> size [
     ^ collection size
 ]
